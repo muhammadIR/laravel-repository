@@ -29,4 +29,16 @@ class FinanceController extends Controller
 
         return back();
     }
+
+    public function update(Request $request, $id)
+    {
+        $data = Finance::findOrFail($id);
+        $data->update($request->only(['keterangan','pemasukan','pengeluaran']));
+        return redirect('/finance');
+    }
+
+    public function destroy($id){
+        Finance::destroy($id);
+        return redirect('/finance');
+    }
 }
