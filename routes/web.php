@@ -4,8 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\FinanceController;
 
-Route::get('/login', [LoginController::class,'index']);
+Route::get('/login', [LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class,'login']);
 
-Route::get('/finance', [FinanceController::class,'index'])->middleware('auth');
-Route::post('/finance', [FinanceController::class,'store'])->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/finance', [FinanceController::class,'index']);
+    Route::post('/finance', [FinanceController::class,'store']);
+    Route::put('/finance/{id}', [FinanceController::class,'update']);
+    Route::delete('/finance/{id}', [FinanceController::class,'destroy']);
+
+    Route::post('/logout', [LoginController::class,'logout'])->name('logout');
+});
